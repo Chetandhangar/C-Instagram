@@ -1,6 +1,7 @@
 import React, {Component } from 'react';
 import {View , Text, TextInput,Button} from 'react-native';
-import firebase from 'firebase'
+import * as firebase from 'firebase';
+import 'firebase/firestore';
 
 
 

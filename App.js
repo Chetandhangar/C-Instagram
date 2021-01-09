@@ -8,7 +8,8 @@ import { createStackNavigator } from '@react-navigation/stack';
 import RegisterScreen from './components/auth/Register';
 import LoginScreen from  './components/auth/Login';
 import MainScreen from './components/Main';
-//redux
+import AddScreen  from './components/Main/Add';
+ //redux
 import {createStore, applyMiddleware} from 'redux';
 import rootReducer from './redux/reducers';
 import { Provider } from 'react-redux'
@@ -16,6 +17,7 @@ import thunk from 'redux-thunk';
 
  //firebase 
 import * as firebase from 'firebase';
+import { State } from 'react-native-gesture-handler';
 
 const store =  createStore(rootReducer, applyMiddleware(thunk))
 
@@ -76,8 +78,8 @@ if(firebase.apps.length === 0){
       <NavigationContainer>
         <Stack.Navigator initialRouteName="Landing">
         <Stack.Screen name="Landing" component={LandingScreen} />
-        <Stack.Screen name="Register" component={RegisterScreen} />
-        <Stack.Screen name="Login" component={LoginScreen} />
+        <Stack.Screen name="Register" component={RegisterScreen}  />
+        <Stack.Screen name="Login" component={LoginScreen}  />
         </Stack.Navigator>
       </NavigationContainer>
     );
@@ -85,7 +87,13 @@ if(firebase.apps.length === 0){
     else{
       return(
         <Provider store={store}>
-           <MainScreen />
+          <NavigationContainer>
+          <Stack.Navigator initialRouteName="Main">
+            <Stack.Screen name="Main" component ={MainScreen}/>
+            <Stack.Screen name="Add" component ={AddScreen} />
+          </Stack.Navigator>
+          </NavigationContainer>
+         
         </Provider>
       
       )
