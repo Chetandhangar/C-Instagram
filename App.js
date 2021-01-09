@@ -8,9 +8,16 @@ import { createStackNavigator } from '@react-navigation/stack';
 import RegisterScreen from './components/auth/Register';
 import LoginScreen from  './components/auth/Login';
 import MainScreen from './components/Main';
+//redux
+import {createStore, applyMiddleware} from 'redux';
+import rootReducer from './redux/reducers';
+import { Provider } from 'react-redux'
+import thunk from 'redux-thunk';
+
  //firebase 
 import * as firebase from 'firebase';
 
+const store =  createStore(rootReducer, applyMiddleware(thunk))
 
 const firebaseConfig = {
   apiKey: "AIzaSyDZCdNsi59t8duK1dCjH6jUZai2hEVsQxo",
@@ -26,7 +33,6 @@ if(firebase.apps.length === 0){
   firebase.initializeApp(firebaseConfig);
 }
 
-//onAuthStateSchanged in component did mound to addd more functioality to app
  class App extends Component{
   constructor(props){
     super(props);
@@ -35,9 +41,9 @@ if(firebase.apps.length === 0){
       loggedIn : false
     }
   }
-  
+  //when component mount check if user is exist or not
   componentDidMount(){
-    firebase.auth().onAuthStateChanged((user) =>{
+    firebase.auth().onAuthStateChanged((user) =>{ ///onAuthStateChange helped to check user state
       if(!user){
         this.setState({
           loggedIn : false,
@@ -78,11 +84,10 @@ if(firebase.apps.length === 0){
     }
     else{
       return(
-       <NavigationContainer>
-         <Stack.Navigator>
-           <Stack.Screen name="Main" component={MainScreen}/>
-         </Stack.Navigator>
-       </NavigationContainer>
+        <Provider store={store}>
+           <MainScreen />
+        </Provider>
+      
       )
     }
   }
