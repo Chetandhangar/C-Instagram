@@ -9,6 +9,7 @@ import RegisterScreen from './components/auth/Register';
 import LoginScreen from  './components/auth/Login';
 import MainScreen from './components/Main';
 import AddScreen  from './components/Main/Add';
+import SaveScreen from './components/Main/Save';
  //redux
 import {createStore, applyMiddleware} from 'redux';
 import rootReducer from './redux/reducers';
@@ -90,7 +91,8 @@ if(firebase.apps.length === 0){
           <NavigationContainer>
           <Stack.Navigator initialRouteName="Main">
             <Stack.Screen name="Main" component ={MainScreen}/>
-            <Stack.Screen name="Add" component ={AddScreen} />
+            <Stack.Screen name="Add" component ={AddScreen} navigation={this.props.navigation}/>
+            <Stack.Screen name="Save" component = {SaveScreen} navigation={this.props.navigation} />
           </Stack.Navigator>
           </NavigationContainer>
          

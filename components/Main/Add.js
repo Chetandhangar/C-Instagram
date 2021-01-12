@@ -3,7 +3,8 @@ import { View, Text, StyleSheet, Button, Image ,TouchableOpacity } from "react-n
 import { Camera } from 'expo-camera';
 import * as ImagePicker from 'expo-image-picker';
 
-export default function Add(){
+
+export default function Add({navigation}){
 
     const [hasCameraPermission, setHasCameraPermission] = useState(null);
     const [hasGalleryPermisssion, setHasGalleryPermission] = useState(null)
@@ -87,6 +88,10 @@ export default function Add(){
             <Button 
             title="Take from Gallery"
             onPress={takeFromGallery}
+            />
+            <Button 
+             title="Save Image"
+             onPress={()=> navigation.navigate('Save', {image})}
             />
             {image && <Image source={{uri : image}} style={{flex: 1}} />}
             </View>

@@ -1,6 +1,6 @@
 import React, {Component } from 'react';
 import {View, Text} from 'react-native';
-import { fetchUser } from '../redux/actions/index'
+import { fetchUser, fetchUserPosts } from '../redux/actions/index'
 import {connect} from 'react-redux/';
 import  { bindActionCreators } from 'redux'
 import { createMaterialBottomTabNavigator} from '@react-navigation/material-bottom-tabs'
@@ -8,11 +8,15 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 
 //Tab Component
 import FeedScreen from './Main/Feed';
-import ProfileScreen from './Main/Profile'
+import ProfileScreen from './Main/Profile';
+import SearchScreenn from './Main/Search';
+
 
 class Main extends Component{
     componentDidMount(){
-        this.props.fetchUser()
+        this.props.fetchUser();
+        this.props.fetchUserPosts();
+        
     }
 
     render(){
@@ -32,6 +36,13 @@ class Main extends Component{
                 tabBarIcon: ({ color }) => (
                   <MaterialCommunityIcons name="home" color={color} size={26} />
                 ),
+              }}
+              />
+              <Tab.Screen name="Search"  component={SearchScreenn}
+              options={{
+                  tabBarIcon:({color}) =>(
+                      <MaterialCommunityIcons name="magnify" color={color} size={26} />
+                    )
               }}
               />
               <Tab.Screen  name="MainAdd" component ={EmptyScreen} 
@@ -59,10 +70,10 @@ class Main extends Component{
 }
 
 const mapStateToProps = (store) =>({
-    currentUser : store.userState.currentUser
+    currentUser : store.userState.currentUser,
 })
 
-const mapDispatchProps = (dispatch) => bindActionCreators({fetchUser} ,dispatch);
+const mapDispatchProps = (dispatch) => bindActionCreators({fetchUser, fetchUserPosts} ,dispatch);
 
 
 export default connect(mapStateToProps, mapDispatchProps)(Main);
