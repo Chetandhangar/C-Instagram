@@ -1,14 +1,88 @@
-import React , {Component} from 'react';
-import { View, Text } from "react-native";
+import React,{useState, useEffect}  from 'react';
+import { View, Text, Image, FlatList, StyleSheet, Button } from "react-native";
+import {connect} from 'react-redux';
+import firebase from 'firebase';
+require('firebase/firestore');
+require('firebase/firebase-storage');
 
-class Feed extends Component{
-    render(){
-        return(
-            <View>
-                <Text>Feed Component</Text>
-            </View>
-        );
-    }
+function Feed(props){
+
+    const [post , setPost] = useState([]);
+   
+
+    useEffect(() =>{
+        const {users, usersLoaded} = props;
+        console.log(users+ "users in main feed")
+        let posts = [];
+        if(props.usersLoaded === props.following.length ){
+            for(let i=0; i< props.following.length; i++){
+                const user = props.users.find(el => el.uid === props.following[i])
+                if(user !== undefined){
+                    posts = [...posts, ...user.posts]
+                }
+            }
+            setPost[posts]
+            console.log(posts);
+        }
+
+
+    },[props.usersLoaded])
+
+    
+    return(
+        <View style={styles.container}>
+           <View style={styles.containerGaller}>
+               <FlatList 
+                horizontal={false}
+                numColumns={1}
+                data={post}
+                renderItem={({item}) =>(
+                    <View style={styles.containerImage}>
+                        <Text style={styles.container}>{item.user.name}</Text>
+
+                    <Image 
+                    style={styles.image}
+                    source={{uri : item.downlaodURL}}
+                    />
+                    </View>
+                )}
+                
+               />
+               
+           </View>
+        </View>
+    );
+
 }
 
-export default Feed;
+const styles = StyleSheet.create({
+    container:{
+        flex : 1,
+    },
+    containerInfo:{
+        margin : 20
+    },
+    containerGaller:{
+        flex: 1
+    },
+    image:{
+        flex:1,
+        aspectRatio:1/1
+    },
+    containerImage:{
+        flex:1/3
+    }
+
+
+})
+
+const mapStateToProps = (store) => ({
+    currentUser : store.userState.currentUser,
+    following : store.userState.following,
+    users: store.usersState.users,
+    usersLoaded : store.usersState.usersLoaded,
+
+})
+
+
+export default connect(mapStateToProps, null)(Feed);

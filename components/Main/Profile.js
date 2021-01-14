@@ -29,6 +29,7 @@ function Profile(props){
         .then((snapshot)=>{
             if(snapshot.exists){
                 setUser(snapshot.data())
+                console.log("trigger when serah user profile")
             }
             else{
                 console.log("User Doesn't exist")
@@ -46,7 +47,7 @@ function Profile(props){
                 const id = doc.id;
                 return{id ,...data}
             })
-            console.log(posts);
+            console.log(posts, "called when we get users posts");
             setUSerPost(posts)
         });
     }
