@@ -21,6 +21,11 @@ function Feed(props){
                     posts = [...posts, ...user.posts]
                 }
             }
+
+            posts.sort(function(x,y){
+                return x.creation - y.creation;
+            })
+
             setPost[posts]
             console.log(posts);
         }
