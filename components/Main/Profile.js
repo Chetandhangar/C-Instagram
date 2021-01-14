@@ -21,7 +21,6 @@ function Profile(props){
             setUSerPost(posts)
         }
         else{
-
         firebase.firestore()
         .collection('users')
         .doc(props.route.params.uid)
@@ -34,8 +33,6 @@ function Profile(props){
                 console.log("User Doesn't exist")
             }
         });
-
-       
         firebase.firestore()
         .collection("posts")
         .doc(props.route.params.uid)
