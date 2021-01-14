@@ -22,7 +22,6 @@ export default function Search(props){
                 const id = doc.id;
                 return{id , ...data}
             })
-            console.log(users)
             setUsers(users);
         })
     }

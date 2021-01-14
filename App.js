@@ -1,6 +1,6 @@
 
 import React, {Component} from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View , LogBox} from 'react-native';
 import  LandingScreen from './components/auth/Landing';
 import {NavigationContainer} from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -18,7 +18,9 @@ import thunk from 'redux-thunk';
 
  //firebase 
 import * as firebase from 'firebase';
-import { State } from 'react-native-gesture-handler';
+
+LogBox.ignoreLogs(['Warning: ...']);
+LogBox.ignoreAllLogs();
 
 const store =  createStore(rootReducer, applyMiddleware(thunk))
 

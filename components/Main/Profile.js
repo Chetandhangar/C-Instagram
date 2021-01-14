@@ -1,22 +1,78 @@
-import React  from 'react';
+import React,{useState, useEffect}  from 'react';
 import { View, Text, Image, FlatList, StyleSheet } from "react-native";
-import {connect} from 'react-redux'
+import {connect} from 'react-redux';
+import firebase from 'firebase';
+require('firebase/firestore');
+require('firebase/firebase-storage');
 
 function Profile(props){
 
-    const {currentUser, posts} = props;
-    console.log({currentUser,posts});
+    const [user, setUser] = useState(null)
+    const [userPost , setUSerPost] = useState([]);
+   
+
+    useEffect(() =>{
+
+        const {currentUser, posts} = props;
+        console.log({currentUser,posts});
+
+        if(props.route.params.uid === firebase.auth().currentUser.uid){
+            setUser(currentUser);
+            setUSerPost(posts)
+        }
+        else{
+
+        firebase.firestore()
+        .collection('users')
+        .doc(props.route.params.uid)
+        .get()
+        .then((snapshot)=>{
+            if(snapshot.exists){
+                setUser(snapshot.data())
+            }
+            else{
+                console.log("User Doesn't exist")
+            }
+        });
+
+       
+        firebase.firestore()
+        .collection("posts")
+        .doc(props.route.params.uid)
+        .collection("userPosts")
+        .orderBy("creation", "asc")
+        .get()
+        .then((snapshot)=>{
+            let posts = snapshot.docs.map(doc =>{
+                const data = doc.data();
+                const id = doc.id;
+                return{id ,...data}
+            })
+            console.log(posts);
+            setUSerPost(posts)
+        });
+    }
+
+
+    },[props.route.params.uid])
+
+    if(user === null){
+        return(
+            <View></View>
+        );
+    }
+
     return(
         <View style={styles.container}>
            <View style={styles.containerInfo}>
-                <Text>{currentUser.name}</Text>
-                <Text>{currentUser.email}</Text>
+                <Text>{user.name}</Text>
+                <Text>{user.email}</Text>
            </View>
            <View style={styles.containerGaller}>
                <FlatList 
                 horizontal={false}
                 numColumns={3}
-                data={posts}
+                data={userPost}
                 renderItem={({item}) =>(
                     <View style={styles.containerImage}>
 
