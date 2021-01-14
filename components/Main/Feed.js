@@ -11,8 +11,6 @@ function Feed(props){
    
 
     useEffect(() =>{
-        const {users, usersLoaded} = props;
-        console.log(users+ "users in main feed")
         let posts = [];
         if(props.usersLoaded === props.following.length ){
             for(let i=0; i< props.following.length; i++){
