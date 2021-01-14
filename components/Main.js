@@ -1,6 +1,6 @@
 import React, {Component } from 'react';
 import {View, Text} from 'react-native';
-import { fetchUser, fetchUserPosts } from '../redux/actions/index'
+import { fetchUser, fetchUserPosts, fetchUserFollowing } from '../redux/actions/index'
 import {connect} from 'react-redux/';
 import  { bindActionCreators } from 'redux'
 import { createMaterialBottomTabNavigator} from '@react-navigation/material-bottom-tabs'
@@ -19,6 +19,7 @@ class Main extends Component{
     componentDidMount(){
         this.props.fetchUser();
         this.props.fetchUserPosts();
+        this.props.fetchUserFollowing();
         
     }
 
@@ -82,7 +83,7 @@ const mapStateToProps = (store) =>({
     currentUser : store.userState.currentUser,
 })
 
-const mapDispatchProps = (dispatch) => bindActionCreators({fetchUser, fetchUserPosts} ,dispatch);
+const mapDispatchProps = (dispatch) => bindActionCreators({fetchUser, fetchUserPosts, fetchUserFollowing} ,dispatch);
 
 
 export default connect(mapStateToProps, mapDispatchProps)(Main);
