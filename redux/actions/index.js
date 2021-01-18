@@ -61,7 +61,7 @@ export function fetchUserFollowing(){
             console.log(following);
             dispatch({type : USER_FOLLOWING_STATE_CHANGED, following});
             for(let i=0 ; i < following.length ; i++ ){
-                dispatch(fetchUsersDate(following[i]));
+                dispatch(fetchUsersDate(following[i],true));
             }
         })
     });
@@ -69,7 +69,7 @@ export function fetchUserFollowing(){
 
 //fetching all users data 
 
-export function fetchUsersDate(uid){
+export function fetchUsersDate(uid, getPosts){
     return((dispatch, getState) =>{
 
         const found = getState().usersState.users.some(el => el.uid ===  uid);
@@ -89,6 +89,9 @@ export function fetchUsersDate(uid){
                 console.log("User doesn't exist");
             }
         })
+        if(getPosts){
+            dispatch(fetchUsersFollowingPosts(uid));
+        }
     }
     })
 }
